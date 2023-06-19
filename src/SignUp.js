@@ -18,9 +18,25 @@ const SignUp = (props) => {
 
     const handleSignUp = async() =>{
         try{
-            const isUserCreated = await auth().createUserWithEmailAndPassword(email,password);
-            console.log(isUserCreated);
-            // console.log(email,password);
+            if(email == '' && password==''){
+                console.error("Enter email and password");
+            }else if(email == ''){
+                console.error("Enter email");
+            }else if(password == ''){
+                console.error("Enter password");
+            }else if(confirmPassword == ''){
+                console.error("Please confirm the password");
+            }else if(confirmPassword != password){
+                console.error("Confirm password doesn't match the password. Please re enter");
+                setConfirmPassword('');
+                setPassword('');
+            }else{
+                const isUserCreated = await auth().createUserWithEmailAndPassword(email,password);
+                console.log(isUserCreated);
+                Alert("SignUp done successfully");
+                props.navigation.navigate("Login")
+
+            }
         }catch(error){
             console.log(error);
         }
@@ -56,7 +72,7 @@ const SignUp = (props) => {
                 <Text style={{fontSize:40,fontWeight:400,color:'#3D3D3D',marginTop:125,marginHorizontal:28}}>ಸೈನ್ ಅಪ್</Text>
                 <Field placeHolder={'ಬಳಕೆದಾರ ಹೆಸರು'} marginTxtField={42} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={email} setVal={val => setEmail(val)}></Field>
                 <Field placeHolder={'ಗುಪ್ತಪದ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={password} setVal={val => setPassword(val)}></Field>
-                <Field placeHolder={'ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58}></Field>
+                <Field placeHolder={'ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={confirmPassword} setVal={val => setConfirmPassword(val)}></Field>
                 {/* <View style={{flexDirection:'row'}}>
                     <Btn bgColor={'#A0002C'} textColor={'#FEF6E1'} btnLabel={"Sign in"} btnwidth={132} btnHeight={61} txtmargin={11} btnmargin={18}/>
                     <View style={{alignItems:'flex-end',marginTop:60,marginLeft:90}}>

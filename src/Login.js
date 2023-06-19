@@ -6,6 +6,7 @@ import Btn from './Btn';
 import Background from './Background';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
+import { getAuth } from "firebase/auth";
 
 const Login = (props) => {
 
@@ -14,8 +15,9 @@ const Login = (props) => {
 
     const onSignInPressed = async() =>{
         try{
-            // const isUserLogin = await auth().signInWithEmailAndPassword(email,password);
-            // console.log(isUserLogin);
+            const isUserLogin = await auth().signInWithEmailAndPassword(email,password);
+            console.log(isUserLogin);
+           
             props.navigation.navigate("MainView")
             // console.log(email,password);
         }catch(error){
@@ -24,6 +26,12 @@ const Login = (props) => {
         // console.warn("SignIn Pressed")
         // props.navigation.navigate("MainView")
     }
+ 
+   // Inside a component or a function
+
+
+
+
 
     return(
         <SafeAreaView>  

@@ -10,8 +10,10 @@ import MainView from './src/mainView.js';
 import SelectFood from './src/SelectFood';
 import Cart from './src/Cart';
 import Checkout from './src/Checkout';
-import auth from '@react-native-firebase/auth';
-import { AuthContext, AuthProvider } from './src/Provider/AuthProvider';
+import BfCart from './src/BfCart';
+import LunchCart from './src/LunchCart';
+import DinnerCart from './src/DinnerCart';
+import SnacksCart from './src/SnacksCart';
 
 
 const Stack = createNativeStackNavigator();
@@ -43,10 +45,14 @@ function App() {
         <Stack.Screen name="MainView" component={MainView} />
         <Stack.Screen name="SelectFood" component={SelectFood} />
         <Stack.Screen name="Cart" component={Cart} />
+        <Stack.Screen name="BfCart" component={BfCart} />
         <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="LunchCart" component={LunchCart} />
+        <Stack.Screen name="DinnerCart" component={DinnerCart} />
+        <Stack.Screen name="SnacksCart" component={SnacksCart} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+} 
 
 export default App;
