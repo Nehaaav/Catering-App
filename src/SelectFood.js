@@ -203,17 +203,17 @@ const SelectFood = ({route}) => {
     <SafeAreaView>
      <View>
         <ScrollView nestedScrollEnabled = {true}>
-            <View style={{marginHorizontal:20,marginTop:50,flex:1,flexDirection:'row',justifyContent:'space-between'}}>
+            <View style={{marginRight:40,marginTop:50,flex:1,flexDirection:'row',justifyContent:'space-between',marginLeft:20}}>
                 <SelectList data={updatedDates} setSelected={(val) => setSelectDate(val)} save="value" placeholder='ದಿನಾಂಕ' boxStyles={{width:100}} inputStyles={{color:'black'}} dropdownTextStyles={{color:'black'}} maxHeight={150} onSelect={createDocumentWithNestedCollection}/>
                 <SelectList data={Time} setSelected={(val) => setChooseTime(val)} save="value" placeholder='ಸಮಯ' boxStyles={{width:100}} inputStyles={{color:'black'}} dropdownTextStyles={{color:'black'}} maxHeight={150}  defaultOption={{key:'ಬ್ರೇಕ್ಫಾಸ್ಟ್',value:'ಬ್ರೇಕ್ಫಾಸ್ಟ್'}} onSelect={createDocumentWithNestedCollection}/>
-                <SelectList data={FoodType} setSelected={(val) => setSelectItemType(val)} save="value" placeholder='ಆಹಾರದ ಪ್ರಕಾರ' boxStyles={{width:140}} inputStyles={{color:'black'}} dropdownTextStyles={{color:'black'}} maxHeight={150} defaultOption={{key:'ಸ್ವೀಟ್ಸ್',value:'ಸ್ವೀಟ್ಸ್'}}/>
+                <SelectList data={FoodType} setSelected={(val) => setSelectItemType(val)} save="value" placeholder='ಆಹಾರದ ಪ್ರಕಾರ' boxStyles={{width:100}} inputStyles={{color:'black'}} dropdownTextStyles={{color:'black'}} maxHeight={150} defaultOption={{key:'ಸ್ವೀಟ್ಸ್',value:'ಸ್ವೀಟ್ಸ್'}}/>
             </View>
             {/* <ScrollView style={{flex:1,marginTop:40}}> */}
                 <FlatList
                     data={foodList}
                     style={{flex:1,marginTop:40}}
                     renderItem={({item})=> 
-                    <Card style={{margin:5,borderRadius:10,marginHorizontal:20,height:150,width:350}}>
+                    <Card style={{margin:5,borderRadius:10,marginRight:20,height:150,width:330,marginLeft:20}}>
                         {/* <View style={{flexDirection:'row',flex:1}}> */}
                             {/* <Text style={{flex:1,fontSize:15}}>Name </Text> */}
                             <Card.Title title={item.Name}  style={{marginTop:55}}
@@ -231,12 +231,12 @@ const SelectFood = ({route}) => {
                   <Card.Title style={{height:90,width:160,color:'red'}}/>
                 </Card>
                 <Modal visible={isModalVisible} onRequestClose={closeModal} style={{height:400,backgroundColor:'white',marginTop:200,marginHorizontal:20,borderRadius:10}}>
-                  <Text style={{marginTop:5,marginLeft:130,fontSize:30}}>ಸಂಖ್ಯೆ</Text>
+                  <Text style={{marginTop:5,marginLeft:130,fontSize:30,color:'black'}}>ಸಂಖ್ಯೆ</Text>
         {/* <View style={{flexDirection:'row',display:'flex'}}> */}
-                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='ಬ್ರೇಕ್ಫಾಸ್ಟ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addBfCount} onChangeText={(val) => setAddBfCount(val)}/>
-                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='ಲಂಚ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addLunchCount} onChangeText={(val) => setAddLunchCount(val)}/>
-                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='ಸ್ನಾಕ್ಸ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addSnacksCount} onChangeText={(val) => setAddSnacksCount(val)}/>
-                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='ಡಿನ್ನರ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addDinnerCount} onChangeText={(val) => setAddDinnerCount(val)}/>
+                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10,color:'black'}} placeholderTextColor={'black'} placeholder='ಬ್ರೇಕ್ಫಾಸ್ಟ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addBfCount} onChangeText={(val) => setAddBfCount(val)}/>
+                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10,color:'black'}} placeholderTextColor={'black'} placeholder='ಲಂಚ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addLunchCount} onChangeText={(val) => setAddLunchCount(val)}/>
+                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10,color:'black'}} placeholderTextColor={'black'} placeholder='ಸ್ನಾಕ್ಸ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addSnacksCount} onChangeText={(val) => setAddSnacksCount(val)}/>
+                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10,color:'black'}} placeholderTextColor={'black'} placeholder='ಡಿನ್ನರ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addDinnerCount} onChangeText={(val) => setAddDinnerCount(val)}/>
                   <Button style={{marginTop:10}} onPress={closeModal} >ಸಲ್ಲಿಸು</Button>
           {/* </View> */}
                 </Modal>
@@ -253,7 +253,7 @@ const SelectFood = ({route}) => {
           ]}
           safeAreaInsets={{ bottom }}
         >
-          <Button icon="check"   style={{ borderRadius:10, marginLeft:50}} textColor='rgba(0, 0, 0, 1)'  onPress={openModal}>ಅಂತಿಮಗೊಳಿಸಿ</Button>
+          <Button icon="check"   style={{ borderRadius:10, marginLeft:30}} textColor='rgba(0, 0, 0, 1)'  onPress={openModal}>ಅಂತಿಮಗೊಳಿಸಿ</Button>
           <Button icon="cart" style={{ borderRadius:10, marginLeft:60,}} textColor='rgba(0, 0, 0, 1)' onPress={goToCart}>ಕಾರ್ಟ್</Button>
         </Appbar>
         </View>

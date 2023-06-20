@@ -102,9 +102,9 @@ const MainView = (props) => {
     return(
       <SafeAreaView>
         <View style={{backgroundColor:'black'}}>
-        <Background img={require('./assets/food4.webp')} backgroundImgHeight={'100%'} imgOpacity={0.35}>
-            <Field marginTxtField={220} bgcolor={'rgba(128,128,128,0.5)'} bgradius={10} placeHolder={'ಸ್ಥಳವನ್ನು ನಮೂದಿಸಿ'} mrgLeft={12} mrgRight={20} phTcolor={'white'} wd={370} ht={58} setVal={(location) => setAddLoc(location)} val={addLoc} clr={'white'}></Field>
-            <TouchableOpacity style={{backgroundColor:'rgba(128,128,128,0.5)',marginTop:40,marginLeft:12,width:370,height:58,borderRadius:10}} onPress={handleTextInputPress}>
+        <Background img={require('./assets/food4.webp')} marginLeft backgroundImgHeight={'100%'} imgOpacity={0.35}>
+            <Field marginTxtField={220} bgcolor={'rgba(128,128,128,0.5)'} mrgLeft={25} bgradius={10} placeHolder={'ಸ್ಥಳವನ್ನು ನಮೂದಿಸಿ'}  phTcolor={'white'} wd={320} ht={58} setVal={(location) => setAddLoc(location)} val={addLoc} clr={'white'}></Field>
+            <TouchableOpacity style={{backgroundColor:'rgba(128,128,128,0.5)',marginTop:40,marginLeft:25,width:320,height:58,borderRadius:10}} onPress={handleTextInputPress}>
             <TextInput
               value={textInputValue}
               placeholder="ದಿನಾಂಕಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ"
@@ -113,7 +113,7 @@ const MainView = (props) => {
               style={{color:'white',marginLeft:12}}
             />
             </TouchableOpacity>
-            <Btn bgColor={'#A0002C'} textColor={'#FEF6E1'} btnLabel={"ಮುಂದುವರಿಸಿ"} btnwidth={350} btnHeight={60} txtmargin={11} btnMarginleft={18} BtnMgTop={140} Press={() => btnPressed()} />
+            <Btn bgColor={'#A0002C'} textColor={'#FEF6E1'} btnLabel={"ಮುಂದುವರಿಸಿ"} btnwidth={320} btnHeight={60} txtmargin={11} btnMarginleft={28} BtnMgTop={140} Press={() => btnPressed()} />
             <View style={{alignItems:'flex-end',marginTop:20,marginLeft:90}}>
             {/* <TouchableOpacity onPress={() => props.navigation.navigate("SelectFood")}>
                 <Text style={{color:'white',fontWeight:'bold'}}>ಐಟಂ ಪಟ್ಟಿಗೆ ತೆರಳಿ</Text>

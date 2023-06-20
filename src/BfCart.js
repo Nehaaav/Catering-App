@@ -60,13 +60,6 @@ let arrayCart=[];
         const timeCollection = nestedDocRef.collection('ಬ್ರೇಕ್ಫಾಸ್ಟ್');
         const emptyArray = [];
         
-       // timePrev = timeCollection;
-        
-        // const itemDoc = await timeCollection.doc('items').set({
-        //   name: arr,
-        // });
-        
-        
         console.log('Document and nested collection created successfully.');
         
         const timeDocSnapshot = await timeCollection.doc('items').get();
@@ -151,8 +144,8 @@ let arrayCart=[];
           keyExtractor={item => item.id}
         />
       )}
-      <TouchableOpacity onPress={() =>navigation.navigate("Cart",{updatedDates})}>
-        <Text>ಕಾರ್ಟ್ ಗೆ ಹಿಂತಿರುಗಿ</Text>
+      <TouchableOpacity style={{backgroundColor:'gray',width:140,borderRadius:10,marginBottom:20}} onPress={() =>navigation.navigate("Cart",{updatedDates})}>
+        <Text style={{color:'white',marginBottom:10,marginTop:10,marginLeft:10}}>ಕಾರ್ಟ್ ಗೆ ಹಿಂತಿರುಗಿ</Text>
       </TouchableOpacity>
     </View>
   );
@@ -167,10 +160,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color:'black'
   },
   emptyText: {
     fontSize: 18,
     textAlign: 'center',
+    color:'black'
   },
   itemContainer: {
     flexDirection: 'row',
@@ -182,6 +177,7 @@ const styles = StyleSheet.create({
   },
   itemName: {
     fontSize: 16,
+    color:'black',
   },
   deleteButton: {
     paddingVertical: 4,

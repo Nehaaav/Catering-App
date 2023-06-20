@@ -22,7 +22,7 @@ const Checkout = ({route}) => {
 
     const showDialog = () => {
         btnPressed();
-        setVisible(true);
+        
     };
 
     const closeDialog = () => {
@@ -73,10 +73,11 @@ const Checkout = ({route}) => {
           console.error("ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ")
         }else{
           setValues();
+          setVisible(true);
           //console.log(selectedDates);
         }
         
-        // props.navigation.navigate("SelectFood");
+
     }
 
     
@@ -87,11 +88,11 @@ const Checkout = ({route}) => {
         <SafeAreaView>
         <View>
             <Text style={{fontSize:40,fontWeight:400,color:'#3D3D3D',marginTop:85,marginHorizontal:28}}>ಚೆಕ್ಔಟ್</Text>
-            <Field placeHolder={'ಹೆಸರು'} marginTxtField={52} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={name} setVal={(val) => setName(val)}></Field>
-            <Field placeHolder={'ವಾಟ್ಸಾಪ್ ಫೋನ್ ಸಂಖ್ಯೆ'} marginTxtField={30} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={phoneNo} setVal={(val) => setPhoneNo(val)}></Field>
+            <Field placeHolder={'ಹೆಸರು'} marginTxtField={52} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={320} ht={58} val={name} setVal={(val) => setName(val)} clr={'black'}></Field>
+            <Field placeHolder={'ವಾಟ್ಸಾಪ್ ಫೋನ್ ಸಂಖ್ಯೆ'} marginTxtField={30} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={320} ht={58} val={phoneNo} setVal={(val) => setPhoneNo(val)} clr={'black'}></Field>
             <View style={{flexDirection:"row",alignItems:'center',marginTop:80}}>
                 <View style={{flex:4,marginLeft:50}}>
-                    <Text style={{fontSize:20}}>ಸ್ಥಳದಲ್ಲಿ ಅಡುಗೆ</Text>
+                    <Text style={{fontSize:20,color:'black'}}>ಸ್ಥಳದಲ್ಲಿ ಅಡುಗೆ</Text>
                 </View>
                 <View style={{flex:1,marginRight:30}}>
                     <RadioButton
@@ -104,7 +105,7 @@ const Checkout = ({route}) => {
             </View>
             <View style={{flexDirection:"row",alignItems:'center',marginTop:30}}>
                 <View style={{flex:4,marginLeft:50}}>
-                    <Text style={{fontSize:20}}>ವಿತರಣೆ</Text>
+                    <Text style={{fontSize:20,color:'black'}}>ವಿತರಣೆ</Text>
                 </View>
                 <View style={{flex:1,marginRight:30}}>
                     <RadioButton
@@ -116,7 +117,7 @@ const Checkout = ({route}) => {
                     />
                 </View>
             </View>
-            <Btn bgColor={'#A0002C'} textColor={'#FEF6E1'} btnLabel={"ಉದ್ಧರಣವನ್ನು ವಿನಂತಿಸಿ"} btnwidth={350} btnHeight={60} txtmargin={11} btnMarginleft={21}  BtnMgTop={80} Press={showDialog}/>
+            <Btn bgColor={'#A0002C'} textColor={'#FEF6E1'} btnLabel={"ಉದ್ಧರಣವನ್ನು ವಿನಂತಿಸಿ"} btnwidth={320} btnHeight={60} txtmargin={11} btnMarginleft={21}  BtnMgTop={80} Press={showDialog}/>
             <Dialog.Container visible={visible}>
                 <Dialog.Title>ಅಭಿನಂದನೆಗಳು</Dialog.Title>
                 <Dialog.Description>

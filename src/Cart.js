@@ -107,7 +107,8 @@ const Cart = ({ route }) => {
           save="value"
           placeholder="ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ"
           boxStyles={{ width: 200 }}
-          inputStyles={{ color: 'black' }}
+          inputStyles={{color:'black'}} 
+          dropdownTextStyles={{color:'black'}}
         />
         <View
           style={{
@@ -272,7 +273,7 @@ const Cart = ({ route }) => {
           bgColor={'#A0002C'}
           textColor={'#FEF6E1'}
           btnLabel={'ಚೆಕ್ಔಟ್'}
-          btnwidth={350}
+          btnwidth={325}
           btnHeight={60}
           txtmargin={11}
           BtnMgTop={50}
