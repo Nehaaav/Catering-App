@@ -5,21 +5,81 @@ import Field from './Field';
 import Btn from './Btn';
 import Dialog from "react-native-dialog";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
-const Checkout = (props) => {
+const Checkout = ({route}) => {
+    const navigation = useNavigation(); 
+
+    const {selected} = route.params;
+    const [name,setName] = React.useState('');
+    const [phoneNo,setPhoneNo] = React.useState('');
 
     const [checked, setChecked] = React.useState('first');
 
     const [visible, setVisible] = React.useState(false);
 
     const showDialog = () => {
+        btnPressed();
         setVisible(true);
     };
 
     const closeDialog = () => {
         setVisible(false);
-        props.navigation.navigate("MainView")
+        navigation.navigate("MainView")
     };
+
+    const setValues = async() =>{
+        try {
+            const currentUser = auth().currentUser;
+        
+            if (currentUser) {
+              const userId = currentUser.uid;
+        
+              const parentCollectionRef = firestore().collection('orderDetails');
+              const documentRef = parentCollectionRef.doc(userId);
+              await documentRef.set({});
+        
+              const nestedCollectionRef = documentRef.collection(selected);
+              const nestedDocRef = nestedCollectionRef.doc('details');
+              await nestedDocRef.update({
+                delivery: boolVal ,
+                name: name,
+                phoneNum: phoneNo, 
+              });
+            }else{
+               
+            }  
+        }catch(e){
+            console.log(e);
+        } 
+    };
+
+    let boolVal;
+
+    const btnPressed = () => {
+         if(checked=='first'){
+            boolVal = false;
+         }
+         else{
+            boolVal= true;
+         }
+        if(name == '' && phoneNo=='' ){
+          console.error("ಹೆಸರು ಮತ್ತು ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ")
+        }else if(name == ''){
+          console.error("ಹೆಸರನ್ನು ನಮೂದಿಸಿ")
+        }else if(phoneNo==''){
+          console.error("ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ")
+        }else{
+          setValues();
+          //console.log(selectedDates);
+        }
+        
+        // props.navigation.navigate("SelectFood");
+    }
+
+    
 
 
 
@@ -27,8 +87,8 @@ const Checkout = (props) => {
         <SafeAreaView>
         <View>
             <Text style={{fontSize:40,fontWeight:400,color:'#3D3D3D',marginTop:85,marginHorizontal:28}}>ಚೆಕ್ಔಟ್</Text>
-            <Field placeHolder={'ಹೆಸರು'} marginTxtField={52} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58}></Field>
-            <Field placeHolder={'ವಾಟ್ಸಾಪ್ ಸಂಖ್ಯೆ'} marginTxtField={30} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} ></Field>
+            <Field placeHolder={'ಹೆಸರು'} marginTxtField={52} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={name} setVal={(val) => setName(val)}></Field>
+            <Field placeHolder={'ವಾಟ್ಸಾಪ್ ಫೋನ್ ಸಂಖ್ಯೆ'} marginTxtField={30} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={phoneNo} setVal={(val) => setPhoneNo(val)}></Field>
             <View style={{flexDirection:"row",alignItems:'center',marginTop:80}}>
                 <View style={{flex:4,marginLeft:50}}>
                     <Text style={{fontSize:20}}>ಸ್ಥಳದಲ್ಲಿ ಅಡುಗೆ</Text>

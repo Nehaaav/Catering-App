@@ -46,10 +46,15 @@ const MainView = (props) => {
     setShowDatePicker(true);
   };
 
+  
   const getTodayDate = () => {
     const today = new Date();
     return today.toISOString().split('T')[0];
   };
+
+  const todayDate = getTodayDate();
+
+  console.log("todays date",todayDate);
 
   
 
@@ -80,15 +85,15 @@ const MainView = (props) => {
     const btnPressed = () => {
         
         if(addLoc == '' && selectedDates=='' ){
-          console.error("Enter the location and dates")
+          console.error("ಸ್ಥಳ ಮತ್ತು ದಿನಾಂಕಗಳನ್ನು ನಮೂದಿಸಿ")
         }else if(addLoc == ''){
-          console.error("Enter the location")
+          console.error("ಸ್ಥಳವನ್ನು ನಮೂದಿಸಿ")
         }else if(selectedDates==''){
-          console.error("Enter the dates")
+          console.error("ದಿನಾಂಕಗಳನ್ನು ನಮೂದಿಸಿ")
         }else{
           addField();
           //console.log(selectedDates);
-          navigation.navigate('SelectFood', { loc: addLoc , selectedDates});
+          navigation.navigate('SelectFood', { loc: addLoc , selectedDates,todayDate});
         }
         
         // props.navigation.navigate("SelectFood");
@@ -102,7 +107,7 @@ const MainView = (props) => {
             <TouchableOpacity style={{backgroundColor:'rgba(128,128,128,0.5)',marginTop:40,marginLeft:12,width:370,height:58,borderRadius:10}} onPress={handleTextInputPress}>
             <TextInput
               value={textInputValue}
-              placeholder="Select dates"
+              placeholder="ದಿನಾಂಕಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ"
               editable={false}
               placeholderTextColor={'white'}  
               style={{color:'white',marginLeft:12}}
@@ -110,9 +115,9 @@ const MainView = (props) => {
             </TouchableOpacity>
             <Btn bgColor={'#A0002C'} textColor={'#FEF6E1'} btnLabel={"ಮುಂದುವರಿಸಿ"} btnwidth={350} btnHeight={60} txtmargin={11} btnMarginleft={18} BtnMgTop={140} Press={() => btnPressed()} />
             <View style={{alignItems:'flex-end',marginTop:20,marginLeft:90}}>
-            <TouchableOpacity onPress={() => props.navigation.navigate("SelectFood")}>
+            {/* <TouchableOpacity onPress={() => props.navigation.navigate("SelectFood")}>
                 <Text style={{color:'white',fontWeight:'bold'}}>ಐಟಂ ಪಟ್ಟಿಗೆ ತೆರಳಿ</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             </View>
 
             {/* Modal for datepicker */}

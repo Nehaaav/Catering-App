@@ -1,24 +1,49 @@
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native'
+import {View, StyleSheet, Text, TouchableOpacity, TextInput,Alert} from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Field from './Field';
 import Btn from './Btn';
 import Background from './Background';
+import { Button } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import auth from '@react-native-firebase/auth';
+import { firebase } from '@react-native-firebase/auth';
 import { getAuth } from "firebase/auth";
 
 const Login = (props) => {
 
     const[email,setEmail] = React.useState('');
     const[password,setPassword] = React.useState('');
+    const [isForgotPassword, setIsForgotPassword] = React.useState(false);
+
+    const handleResetPassword = () => {
+        firebase
+          .auth()
+          .sendPasswordResetEmail(email)
+          .then(() => {
+            Alert.alert('Password Reset Email Sent', 'Please check your email for further instructions.');
+            setIsForgotPassword(false); // Reset to login form after sending the reset email
+          })
+          .catch((error) => {
+            Alert.alert('Error', error.message);
+          });
+      };
+    
 
     const onSignInPressed = async() =>{
         try{
+            if(email=='' && password==''){
+                console.error("ಇಮೇಲ್ ಮತ್ತು ಪಾಸ್ವರ್ಡ್ ನಮೂದಿಸಿ");
+            }else if(email == ''){
+                console.error("ಇಮೇಲ್ ನಮೂದಿಸಿ");
+            }else if(password == ''){
+                console.error("ಇಮೇಲ್ ನಮೂದಿಸಿ");
+            }else{
             const isUserLogin = await auth().signInWithEmailAndPassword(email,password);
             console.log(isUserLogin);
            
             props.navigation.navigate("MainView")
+            } 
             // console.log(email,password);
         }catch(error){
             console.log(error);
@@ -34,18 +59,32 @@ const Login = (props) => {
 
 
     return(
-        <SafeAreaView>  
+        <SafeAreaView>
+            {isForgotPassword ? (
+        <View>
+          <TextInput
+            style={{backgroundColor:'#FFFFFF',borderRadius:10,marginTop:50,marginHorizontal:10}}
+            placeholder="Email"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+          />
+          <Button style={{marginTop:30,marginHorizontal:20,borderRadius:10}}  onPress={handleResetPassword} >Reset Password</Button>
+          <Button style={{marginTop:30,marginHorizontal:10,borderRadius:10}}  onPress={() => setIsForgotPassword(false)} >Back to Login</Button>
+        </View>
+      ) : (  
             <View>
                 <Text style={{fontSize:40,fontWeight:400,color:'#3D3D3D',marginTop:125,marginHorizontal:28}}>ಸೈನ್ ಇನ್</Text>
-                <Field placeHolder={'ಬಳಕೆದಾರ ಹೆಸರು'} marginTxtField={52} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={email} setVal={setEmail}></Field>
+                <Field placeHolder={'ಇಮೇಲ್'} marginTxtField={52} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={email} setVal={setEmail}></Field>
                 <Field placeHolder={'ಗುಪ್ತಪದ'} secureEntry={true} marginTxtField={30} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={password} setVal={setPassword}></Field>
                 {/* <FontAwesome5 name={"eye"} size={25} style={{alignSelf:'center'}}/> */}
                 <View style={{flexDirection:'row'}}>
                     <Btn bgColor={'#A0002C'} textColor={'#FEF6E1'} btnLabel={"ಸೈನ್ ಇನ್"} btnwidth={132} btnHeight={61} txtmargin={11} btnMarginleft={18} BtnMgTop={40} Press={() => onSignInPressed()}/>
                     <View style={{alignItems:'flex-end',marginTop:60,marginLeft:90}}>
+                        <TouchableOpacity onPress={()=>setIsForgotPassword(true)}>
                         <Text style={{color:'rgba(61, 61, 61, 1)',fontWeight:'bold',fontSize:16}}>
                             ಪಾಸ್ವರ್ಡ್ ಮರೆತಿರಾ?
                         </Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <Background img={require('./assets/food7.jpg')} backgroundImgHeight={'65%'} imgOpacity={0.2}>
@@ -58,6 +97,7 @@ const Login = (props) => {
                     </View>
                 </Background>
             </View>
+        )}
         </SafeAreaView>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, ScrollView, StyleSheet,Text,  TextInput } from 'react-native';
+import { View, FlatList, ScrollView, StyleSheet,Text,  TextInput,Alert } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { Card, IconButton, FAB, Appbar, useTheme,Button,Modal } from 'react-native-paper';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,26 +10,20 @@ import { useNavigation } from '@react-navigation/native';
 
 const BOTTOM_APPBAR_HEIGHT = 60;
 
-var arr = [];
+let dummyArr = [];
 const SelectFood = ({route}) => {
 
   const navigation = useNavigation();
 
-  const { loc, selectedDates } = route.params;
+  const { loc, selectedDates,todayDate } = route.params;
 
   const [visible, setVisible] = React.useState(false);
 
-  const showDialog = () => {
-    setVisible(true);
-  };
 
-  const handleCancel = () => {
-    setVisible(false);
-  };
-
-  const handleOK = () => {
-    setVisible(false);
-  };
+  const [addBfCount,setAddBfCount] = React.useState("");
+  const [addLunchCount,setAddLunchCount] = React.useState("");
+  const [addDinnerCount,setAddDinnerCount] = React.useState("");
+  const [addSnacksCount,setAddSnacksCount] = React.useState("");
 
   const [selectDate, setSelectDate] = React.useState("");
   
@@ -45,16 +39,17 @@ const SelectFood = ({route}) => {
   };
 
   const closeModal = () => {
+    createDocumentWithNestedCollection(dummyArr);
     setModalVisible(false);
   };
 
   
 
   var Time = [
-    { key: '1', value: 'Breakfast' },
-    { key: '2', value: 'Lunch' },
-    { key: '3', value: 'Snacks' },
-    { key: '4', value: 'Dinner' },
+    { key: '1', value: 'ಬ್ರೇಕ್ಫಾಸ್ಟ್' },
+    { key: '2', value: 'ಲಂಚ್' },
+    { key: '3', value: 'ಸ್ನಾಕ್ಸ್' },
+    { key: '4', value: 'ಡಿನ್ನರ್' },
   ];
 
   var FoodType = [
@@ -92,13 +87,15 @@ const SelectFood = ({route}) => {
   console.log('newDates',updatedDates);
   
   const goToCart = () => {
-    navigation.navigate("Cart",{updatedDates})
+    navigation.navigate("Cart",{updatedDates,addBfCount,addDinnerCount,addLunchCount,addSnacksCount})
   };
   
   
   
-  const addToCart=(name)=>{
-      try {
+  //let arr=[]
+
+  const addToCart = async (name) => {
+    try {
       const currentUser = auth().currentUser;
   
       if (currentUser) {
@@ -106,36 +103,37 @@ const SelectFood = ({route}) => {
   
         const parentCollectionRef = firestore().collection('orderDetails');
         const documentRef = parentCollectionRef.doc(userId);
-       // await documentRef.set({});
-  
         const nestedCollectionRef = documentRef.collection(selectDate);
         const nestedDocRef = nestedCollectionRef.doc('details');
-        
-  
         const timeCollection = nestedDocRef.collection(chooseTime);
-       
-         timeCollection.doc('items')
-         .onSnapshot(documentSnapshot => {
-        //console.log('User data: ', documentSnapshot.data().name);
-        arr = documentSnapshot.data().name || [];
+  
+        // Fetch the items array from Firestore
+        const documentSnapshot = await timeCollection.doc('items').get();
+        var arr = await documentSnapshot.data().name || [];
+        console.log("arr inside snapshot", arr);
+  
+        // Push the new item to the array
         arr.push(name);
-        createDocumentWithNestedCollection();
-        
-      });
-        
-       // console.log('arr',arr);
-      } 
+        console.log("arr after push", arr);
+  
+        // Update the Firestore document with the updated array
+        await createDocumentWithNestedCollection(arr);
+
+        Alert.alert("ಐಟಂ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಗಿದೆ");
+  
+        console.log("arr after updating Firestore", arr);
+      }
     } catch (error) {
-      console.error('Error creating document and nested collection:', error);
+      console.log('Error:', error);
     }
-  }
+  };
 
 
   // addtocart function end
 
-
+ 
   
-  const createDocumentWithNestedCollection = async () => {
+  const createDocumentWithNestedCollection = async (arr) => {
     try {
       const currentUser = auth().currentUser;
   
@@ -149,16 +147,19 @@ const SelectFood = ({route}) => {
         const nestedCollectionRef = documentRef.collection(selectDate);
         const nestedDocRef = nestedCollectionRef.doc('details');
         await nestedDocRef.set({
-          count: '',
+          bfCount: addBfCount,
+          lunchCount: addLunchCount,
+          snacksCount: addSnacksCount,
+          dinnerCount: addDinnerCount,
           delivery: true,
           location: loc,
           name: '',
           phoneNum: '',
-          orderDate: '',
+          orderDate: todayDate,
         });
   
         const timeCollection = nestedDocRef.collection(chooseTime);
-       
+        const emptyArray = [];
         
        // timePrev = timeCollection;
         
@@ -169,15 +170,26 @@ const SelectFood = ({route}) => {
         
         console.log('Document and nested collection created successfully.');
         
-        await timeCollection.doc('items').set({
+        const timeDocSnapshot = await timeCollection.doc('items').get();
+
+      if (timeDocSnapshot.exists) {
+        // If the chooseTime collection already exists, update the existing document
+        await timeCollection.doc('items').update({
           name: arr,
         });
+      } else {
+        // If the chooseTime collection doesn't exist, create it and add the document
+        await timeCollection.doc('items').set({
+          name: emptyArray,
+        });
+      }
+      dummyArr = arr;
         console.log('arr',arr);
       } else {
-        console.error('No user is currently signed in.');
+        console.error('ಪ್ರಸ್ತುತ ಯಾವುದೇ ಬಳಕೆದಾರರು ಸೈನ್ ಇನ್ ಆಗಿಲ್ಲ.');
       }
     } catch (error) {
-      console.error('Error creating document and nested collection:', error);
+      console.log('Error creating document and nested collection:', error);
     }
   };
 
@@ -193,7 +205,7 @@ const SelectFood = ({route}) => {
         <ScrollView nestedScrollEnabled = {true}>
             <View style={{marginHorizontal:20,marginTop:50,flex:1,flexDirection:'row',justifyContent:'space-between'}}>
                 <SelectList data={updatedDates} setSelected={(val) => setSelectDate(val)} save="value" placeholder='ದಿನಾಂಕ' boxStyles={{width:100}} inputStyles={{color:'black'}} dropdownTextStyles={{color:'black'}} maxHeight={150} onSelect={createDocumentWithNestedCollection}/>
-                <SelectList data={Time} setSelected={(val) => setChooseTime(val)} save="value" placeholder='ಸಮಯ' boxStyles={{width:100}} inputStyles={{color:'black'}} dropdownTextStyles={{color:'black'}} maxHeight={150}  defaultOption={{key:'Breakfast',value:'Breakfast'}} onSelect={createDocumentWithNestedCollection}/>
+                <SelectList data={Time} setSelected={(val) => setChooseTime(val)} save="value" placeholder='ಸಮಯ' boxStyles={{width:100}} inputStyles={{color:'black'}} dropdownTextStyles={{color:'black'}} maxHeight={150}  defaultOption={{key:'ಬ್ರೇಕ್ಫಾಸ್ಟ್',value:'ಬ್ರೇಕ್ಫಾಸ್ಟ್'}} onSelect={createDocumentWithNestedCollection}/>
                 <SelectList data={FoodType} setSelected={(val) => setSelectItemType(val)} save="value" placeholder='ಆಹಾರದ ಪ್ರಕಾರ' boxStyles={{width:140}} inputStyles={{color:'black'}} dropdownTextStyles={{color:'black'}} maxHeight={150} defaultOption={{key:'ಸ್ವೀಟ್ಸ್',value:'ಸ್ವೀಟ್ಸ್'}}/>
             </View>
             {/* <ScrollView style={{flex:1,marginTop:40}}> */}
@@ -201,10 +213,12 @@ const SelectFood = ({route}) => {
                     data={foodList}
                     style={{flex:1,marginTop:40}}
                     renderItem={({item})=> 
-                    <Card style={{margin:5,borderRadius:10,marginHorizontal:20}}>
+                    <Card style={{margin:5,borderRadius:10,marginHorizontal:20,height:150,width:350}}>
                         {/* <View style={{flexDirection:'row',flex:1}}> */}
                             {/* <Text style={{flex:1,fontSize:15}}>Name </Text> */}
-                            <Card.Title title={item.Name}  right ={(props) => <IconButton {...props} icon={require('./assets/food3.webp')} style={{height:150,width:160}} onPress={() => {}} />} />
+                            <Card.Title title={item.Name}  style={{marginTop:55}}
+                            //  right ={() => <IconButton {...props} icon={require('./assets/food3.webp')} style={{height:150,width:160}} onPress={() => {}} />} 
+                            />
                             <FAB icon="plus" style={styles.fab} small color='white' onPress={() => addToCart(item.Name)}/>
                             {/* <Text style={{flex:1,fontSize:15,alignItems:'center'}}>{item.Name}</Text> */}
                             {/* <Card.Cover source={require('D:\myWork\react\foodApp\src\assets\food5.jpg')} resizeMode='contain' style={{height: 150,width:150}}/> */}
@@ -219,11 +233,11 @@ const SelectFood = ({route}) => {
                 <Modal visible={isModalVisible} onRequestClose={closeModal} style={{height:400,backgroundColor:'white',marginTop:200,marginHorizontal:20,borderRadius:10}}>
                   <Text style={{marginTop:5,marginLeft:130,fontSize:30}}>ಸಂಖ್ಯೆ</Text>
         {/* <View style={{flexDirection:'row',display:'flex'}}> */}
-                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='Enter Breakfast count'/>
-                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='Enter Lunch Count'/>
-                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='Enter Snacks Count'/>
-                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='Enter Dinner Count'/>
-                  <Button style={{marginTop:10}} onPress={closeModal} >Submit</Button>
+                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='ಬ್ರೇಕ್ಫಾಸ್ಟ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addBfCount} onChangeText={(val) => setAddBfCount(val)}/>
+                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='ಲಂಚ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addLunchCount} onChangeText={(val) => setAddLunchCount(val)}/>
+                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='ಸ್ನಾಕ್ಸ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addSnacksCount} onChangeText={(val) => setAddSnacksCount(val)}/>
+                  <TextInput style={{backgroundColor:'rgb(242, 242, 242)',marginTop:10,marginHorizontal:10,borderRadius:10}} placeholder='ಡಿನ್ನರ್ ಎಣಿಕೆ ನಮೂದಿಸಿ' value={addDinnerCount} onChangeText={(val) => setAddDinnerCount(val)}/>
+                  <Button style={{marginTop:10}} onPress={closeModal} >ಸಲ್ಲಿಸು</Button>
           {/* </View> */}
                 </Modal>
             {/* </ScrollView> */}
@@ -251,7 +265,8 @@ const SelectFood = ({route}) => {
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
-    margin: 16,
+    // margin: 0,
+    marginRight:10,
     right: 0,
     bottom: 0,
     borderRadius:50,

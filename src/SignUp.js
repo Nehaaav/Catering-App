@@ -1,4 +1,4 @@
-import {View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import {View, StyleSheet, Text, TouchableOpacity, Alert } from 'react-native'
 import React, { useContext, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Field from './Field';
@@ -33,12 +33,12 @@ const SignUp = (props) => {
             }else{
                 const isUserCreated = await auth().createUserWithEmailAndPassword(email,password);
                 console.log(isUserCreated);
-                Alert("SignUp done successfully");
+                Alert.alert("SignUp done successfully");
                 props.navigation.navigate("Login")
 
             }
         }catch(error){
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -70,7 +70,7 @@ const SignUp = (props) => {
         <SafeAreaView>
             <View>
                 <Text style={{fontSize:40,fontWeight:400,color:'#3D3D3D',marginTop:125,marginHorizontal:28}}>ಸೈನ್ ಅಪ್</Text>
-                <Field placeHolder={'ಬಳಕೆದಾರ ಹೆಸರು'} marginTxtField={42} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={email} setVal={val => setEmail(val)}></Field>
+                <Field placeHolder={'ಇಮೇಲ್'} marginTxtField={42} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={email} setVal={val => setEmail(val)}></Field>
                 <Field placeHolder={'ಗುಪ್ತಪದ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={password} setVal={val => setPassword(val)}></Field>
                 <Field placeHolder={'ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={confirmPassword} setVal={val => setConfirmPassword(val)}></Field>
                 {/* <View style={{flexDirection:'row'}}>
