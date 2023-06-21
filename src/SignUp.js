@@ -46,9 +46,9 @@ const SignUp = (props) => {
         <SafeAreaView>
             <View>
                 <Text style={{fontSize:40,fontWeight:400,color:'#3D3D3D',marginTop:125,marginHorizontal:28}}>ಸೈನ್ ಅಪ್</Text>
-                <Field placeHolder={'ಇಮೇಲ್'} marginTxtField={42} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={email} setVal={val => setEmail(val)} clr={'black'}></Field>
-                <Field placeHolder={'ಗುಪ್ತಪದ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={password} setVal={val => setPassword(val)} clr={'black'}></Field>
-                <Field placeHolder={'ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={360} ht={58} val={confirmPassword} setVal={val => setConfirmPassword(val)} clr={'black'}></Field>
+                <Field placeHolder={'ಇಮೇಲ್'} marginTxtField={42} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={340} ht={58} val={email} setVal={val => setEmail(val)} clr={'black'}></Field>
+                <Field placeHolder={'ಗುಪ್ತಪದ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={340} ht={58} val={password} setVal={val => setPassword(val)} clr={'black'}></Field>
+                <Field placeHolder={'ಪಾಸ್ವರ್ಡ್ ದೃಢೀಕರಿಸಿ'} secureEntry={true} marginTxtField={20} bgcolor={'#FFFFFF'} bgradius={10} phTcolor={'rgba(61, 61, 61, 0.5)'} wd={340} ht={58} val={confirmPassword} setVal={val => setConfirmPassword(val)} clr={'black'}></Field>
                 <Background img={require('./assets/food7.jpg')} backgroundImgHeight={'70%'} imgOpacity={0.2}>
                     <LinearGradient colors={['#f2f2f2', '#ffffff00']} style={{ backgroundColor: 'transparent', position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, }} />
                     <View style={{flexDirection:'row',marginBottom:110,marginRight:20}}>
