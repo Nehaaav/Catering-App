@@ -20,22 +20,6 @@ const Stack = createNativeStackNavigator();
 
 function App() {
 
-  // const {user,setUser} = React.useContext(AuthContext);
-  // const [initializing,setInitializing] = React.useState(true);
-
-  // // Handle user state changes
-  // function onAuthStateChanged(){
-  //   setUser(user);
-  //   if (initializing) setInitializing(false);
-  // }
-
-  // React.useEffect(() => {
-  //   const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-  //   return subscriber; // unsubscribe on unmount
-  // }, []);
-
-  // if(initializing) return null;
-
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown:false}}>

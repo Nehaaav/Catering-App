@@ -75,7 +75,7 @@ const SelectFood = ({route}) => {
     {key: '4', value: 'ಕಾಯಿಹುಳಿ'},
   ];
 
-  const [foodList, setFoodList] = useState([]);
+  const [foodList, setFoodList] = React.useState([]);
 
   useEffect(() => {
     const unsubscribe = firestore()
@@ -93,6 +93,7 @@ const SelectFood = ({route}) => {
 
     return () => unsubscribe();
   }, [selectItemType]);
+  
 
   //Orderlist creation start
   console.log('dates', selectedDates);
